@@ -50,8 +50,17 @@ func GetMusicList(html string) (err error, Resultlist []musicList) {
 			continue
 		}
 		Resultlist[index].Url = fmt.Sprintf(url_template, params[1])
-		Resultlist[index].Name = strings.ReplaceAll(params[2], "&nbsp;", " ")
+		Resultlist[index].Name = changeName(params[2])
 		index++
 	}
 	return nil, Resultlist
+}
+
+//纠正非法的音乐文件名
+func changeName(name string) string {
+	name = strings.ReplaceAll(name, "&nbsp;", " ")
+	name = strings.ReplaceAll(name, "&amp;", "&")
+	name = strings.ReplaceAll(name, "\\", "-")
+	name = strings.ReplaceAll(name, "/", "-")
+	return name
 }
